@@ -1,5 +1,5 @@
 namespace SimpleSharpBoy;
-public sealed class Cartridge
+public sealed class Cartridge : IBusConnector<Bit8Value, Bit16Value>
 {
     readonly byte[] _data;
 
@@ -7,34 +7,10 @@ public sealed class Cartridge
     {
         _data = data;
     }
-
-    public string Title
-    {
-        get
-        {
-            return SpanBytesToString(_data[0x0134..(0x0143 + 1)].AsSpan(), 16);
-        }
-    }
-
-    private static string SpanBytesToString(Span<byte> buffer, int stringSize)
-    {
-        var title = new char[stringSize];
-        var size = 0;
-        for (int i = 0; i < buffer.Length; i++)
-        {
-            var b = buffer[i];
-
-            if (b == 0)
-                break;
-            size++;
-            title[i] = (char)b;
-        }
-
-        return new string(title, 0, size);
-    }
-
+    public ushort StartAddress => 0;
+    public ushort Length => 0x7FFF;
+    public string Title => SpanBytesToString(_data[0x0134..(0x0143 + 1)].AsSpan(), 16);
     public int RomSize => 32 * (1 << _data[0x0148]);
-
     public int RamSize => _data[0x0149] switch
     {
         2 => 8,
@@ -239,5 +215,22 @@ public sealed class Cartridge
         }
 
     }
+    public Bit8Value Read(Bit16Value address) => _data[address.Value];
+    public void Write(Bit16Value address, Bit8Value value) => _data[address.Value] = value.Value;
+    private static string SpanBytesToString(Span<byte> buffer, int stringSize)
+    {
+        var title = new char[stringSize];
+        var size = 0;
+        for (int i = 0; i < buffer.Length; i++)
+        {
+            var b = buffer[i];
 
+            if (b == 0)
+                break;
+            size++;
+            title[i] = (char)b;
+        }
+
+        return new string(title, 0, size);
+    }
 }

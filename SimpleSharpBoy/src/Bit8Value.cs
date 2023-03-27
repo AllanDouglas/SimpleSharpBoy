@@ -1,12 +1,10 @@
 namespace SimpleSharpBoy;
 
 public struct Bit8Value : IEquatable<Bit8Value>, IEquatable<byte>, IEquatable<sbyte>
-
 {
     public byte Value { get; set; }
 
     public override string ToString() => Value.ToString();
-
     public static implicit operator Bit8Value(byte a) => new() { Value = a };
     public static explicit operator byte(Bit8Value a) => a.Value;
     public static explicit operator Bit16Value(Bit8Value a) => new() { HighByte = a.Value };
@@ -30,12 +28,10 @@ public struct Bit8Value : IEquatable<Bit8Value>, IEquatable<byte>, IEquatable<sb
     public static Bit8Value operator +(Bit8Value a, byte b) => new() { Value = (byte)(a.Value + b) };
     public static Bit8Value operator -(Bit8Value a, byte b) => new() { Value = (byte)(a.Value - b) };
     public static Bit8Value operator ^(Bit8Value a, byte b) => new() { Value = (byte)(a.Value ^ b) };
-
     public static Bit8Value operator *(Bit8Value a, int b) => new() { Value = (byte)(a.Value * b) };
     public static Bit8Value operator /(Bit8Value a, int b) => new() { Value = (byte)(a.Value / b) };
     public static Bit8Value operator *(Bit8Value a, byte b) => new() { Value = (byte)(a.Value * b) };
     public static Bit8Value operator /(Bit8Value a, byte b) => new() { Value = (byte)(a.Value / b) };
-
     public static Bit8Value operator +(Bit8Value a, Bit8Value b) => new() { Value = (byte)(a.Value + b.Value) };
     public static Bit8Value operator -(Bit8Value a, Bit8Value b) => new() { Value = (byte)(a.Value - b.Value) };
     public static Bit8Value operator *(Bit8Value a, Bit8Value b) => new() { Value = (byte)(a.Value * b.Value) };
@@ -51,13 +47,13 @@ public struct Bit8Value : IEquatable<Bit8Value>, IEquatable<byte>, IEquatable<sb
     public static Bit8Value operator >>(Bit8Value a, int b) => new() { Value = (byte)(a.Value >> b) };
 
 
-    public override bool Equals(object other)
+    public override bool Equals(object? other)
     {
         if (other is null)
         {
             return false;
         }
-
+        
         if (other is Bit8Value bit8Value)
         {
             return Equals(bit8Value);

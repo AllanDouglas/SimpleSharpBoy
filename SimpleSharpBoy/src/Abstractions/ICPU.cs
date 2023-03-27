@@ -4,5 +4,5 @@ public interface ICPU
 {
     void Reset();
     void Tick();
-    
+
 }

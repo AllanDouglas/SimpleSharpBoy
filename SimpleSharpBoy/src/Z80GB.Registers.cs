@@ -1,6 +1,6 @@
 namespace SimpleSharpBoy;
 
-public sealed partial class Z80GB
+public sealed partial class SimpleBoyCPU
 {
     public struct Registers
     {
@@ -30,7 +30,7 @@ public sealed partial class Z80GB
             get => BC.LowByte;
             set => BC.LowByte = value;
         }
-        
+
         public Bit8Value D
         {
             get => DE.HighByte;
@@ -80,7 +80,7 @@ public sealed partial class Z80GB
             ? (byte)reg | (byte)flag
             : ((byte)reg & ((byte)reg ^ (byte)flag)));
 
-        public override string ToString() => $"AF {AF.Value:X}, BC {BC.Value:X}, DE {DE.Value:X}, HL {HL.Value:X}, SP {SP.Value:X}";
+        public override string ToString() => $"AF {AF.Value:X}, BC {BC.Value:X}, DE {DE.Value:X}, HL {HL.Value:X}, SP {SP.Value:X}, PC {PC.Value:X}";
 
     }
 

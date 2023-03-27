@@ -1,5 +1,3 @@
-using System.Numerics;
-
 namespace SimpleSharpBoy;
 
 public struct Bit16Value : IEquatable<Bit16Value>, IEquatable<ushort>
@@ -25,6 +23,7 @@ public struct Bit16Value : IEquatable<Bit16Value>, IEquatable<ushort>
 
     public static bool operator ==(Bit16Value a, Bit16Value b) => a.Value == b.Value;
     public static bool operator !=(Bit16Value a, Bit16Value b) => a.Value != b.Value;
+    public static Bit16Value operator +(Bit16Value a, Bit16Value b) => new() { Value = (ushort)(a.Value + b.Value) };
     public static Bit16Value operator +(Bit16Value a, int inc) => new() { Value = (ushort)(a.Value + inc) };
     public static Bit16Value operator ++(Bit16Value a) => new() { Value = (ushort)(a.Value + 1) };
     public static Bit16Value operator -(Bit16Value a, int inc) => new() { Value = (ushort)(a.Value - inc) };
@@ -33,14 +32,14 @@ public struct Bit16Value : IEquatable<Bit16Value>, IEquatable<ushort>
     public static Bit16Value operator &(Bit16Value a, int b) => new() { Value = (ushort)(a.Value & b) };
     public static Bit16Value operator >>(Bit16Value a, int b) => new() { Value = (ushort)(a.Value >> b) };
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? other)
     {
-        if (obj == default)
+        if (other == default)
         {
             return false;
         }
 
-        if (obj is Bit16Value bit16Obj)
+        if (other is Bit16Value bit16Obj)
         {
             return Equals(bit16Obj);
         }

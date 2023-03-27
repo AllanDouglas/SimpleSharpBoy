@@ -1,19 +1,24 @@
 namespace SimpleSharpBoy;
 
-public sealed partial class Z80GB : ICPU
+public sealed partial class SimpleBoyCPU : ICPU
 {
     private delegate void Instruction();
+    private static readonly Instruction NOT_IMPlEMENTED = EMPTY;
+    private static void EMPTY() { }
+
     private Registers _registers;
     private Clock _clock;
     private bool _halted;
     private Bit16Value _lastPC;
     private Bit8Value _lastOP;
+    private Instruction _lastFunction = NOT_IMPlEMENTED;
     private readonly IBus<Bit8Value, Bit16Value> _bus;
     private readonly Dictionary<byte, Instruction> _map = new();
-
+    private long _ticks;
     public Registers CpuRegisters => _registers;
 
-    public Z80GB(IBus<Bit8Value, Bit16Value> bus)
+
+    public SimpleBoyCPU(IBus<Bit8Value, Bit16Value> bus)
     {
         _bus = bus;
         InitInstructions();
@@ -53,27 +58,37 @@ public sealed partial class Z80GB : ICPU
 
     public void Tick()
     {
-
         if (!_halted)
+        {
+            FetchInstruction();
+            ExecuteInstruction();
+            EmulateCycles();
+        }
+
+        void FetchInstruction()
         {
             _lastPC = _registers.PC;
             _lastOP = Fetch();
-
-
-            var function = Decode(_lastOP);
-
-            function.Invoke();
         }
 
-        // DumpLastExecutedInstruction();
-
+        void ExecuteInstruction()
+        {
+            _lastFunction = Decode(_lastOP);
+            _lastFunction.Invoke();
+        }
+       
+        void EmulateCycles()
+        {
+            var time = TimeSpan.FromMicroseconds(0.25 * _clock.cycles);
+            _ticks += _clock.cycles;
+            _clock.cycles = 0;
+            Thread.Sleep(time);
+        }
     }
 
-    private void DumpLastExecutedInstruction()
-    {
-        Console.WriteLine(string.Format("PC {0,-5:X} | OP {1,-4:X} | REG {2,10}",
-                                      _lastPC.Value, _lastOP.Value, _registers));
-    }
+    public void DumpLastExecutedInstruction()
+        => Console.WriteLine(string.Format("PC {0,-5:X} | OP {1,-4:X} | FUNC {2,15:X} | REG {3,25}",
+                                      _lastPC.Value, _lastOP.Value, _lastFunction.Method.Name, _registers));
 
     private Instruction Decode(Bit8Value op)
     {
@@ -81,8 +96,10 @@ public sealed partial class Z80GB : ICPU
         {
             return instruction;
         }
+
         DumpLastExecutedInstruction();
         throw new NotImplementedException($"INSTRUCTION {op.Value:X} NOT IMPLEMENTED YET");
+        // return NOT_IMPlEMENTED;
     }
     private Bit8Value Fetch() => _bus.Read(_registers.PC++);
 
