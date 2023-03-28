@@ -6,6 +6,7 @@ public sealed partial class SimpleBoyCPU : ICPU
     private static readonly Instruction NOT_IMPlEMENTED = EMPTY;
     private static void EMPTY() { }
 
+    private bool _debug;
     private Registers _registers;
     private Clock _clock;
     private bool _halted;
@@ -16,7 +17,6 @@ public sealed partial class SimpleBoyCPU : ICPU
     private readonly Dictionary<byte, Instruction> _map = new();
     private long _ticks;
     public Registers CpuRegisters => _registers;
-
 
     public SimpleBoyCPU(IBus<Bit8Value, Bit16Value> bus)
     {
@@ -63,6 +63,10 @@ public sealed partial class SimpleBoyCPU : ICPU
             FetchInstruction();
             ExecuteInstruction();
             EmulateCycles();
+            if (_debug)
+            {
+                DumpLastExecutedInstruction();
+            }
         }
 
         void FetchInstruction()
@@ -76,7 +80,7 @@ public sealed partial class SimpleBoyCPU : ICPU
             _lastFunction = Decode(_lastOP);
             _lastFunction.Invoke();
         }
-       
+
         void EmulateCycles()
         {
             var time = TimeSpan.FromMicroseconds(0.25 * _clock.cycles);

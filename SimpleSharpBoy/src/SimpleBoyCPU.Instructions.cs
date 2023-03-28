@@ -54,6 +54,10 @@ public sealed partial class SimpleBoyCPU
 
 
         _map.Add(0x40, LD_B_B);
+        _map.Add(0x41, LD_B_C);
+        _map.Add(0x42, LD_B_D);
+        _map.Add(0x43, LD_B_E);
+        _map.Add(0x44, LD_B_H);
         _map.Add(0x46, LD_B_ADDRS_HL);
         _map.Add(0x47, LD_B_A);
         _map.Add(0x4E, LD_C_ADDRS_HL);
@@ -64,6 +68,7 @@ public sealed partial class SimpleBoyCPU
         _map.Add(0x5D, LD_E_L);
         _map.Add(0x5F, LD_E_A);
 
+        _map.Add(0x67, LD_H_A);
         _map.Add(0x6E, LD_L_ADDRSS_HL);
         _map.Add(0x6F, LD_L_A);
 
@@ -78,11 +83,14 @@ public sealed partial class SimpleBoyCPU
         _map.Add(0x7B, LD_A_E);
         _map.Add(0x7C, LD_A_H);
         _map.Add(0x7D, LD_A_L);
+        _map.Add(0x7E, LD_A_ADDRSS_HL);
 
         _map.Add(0xA9, XOR_C);
+        _map.Add(0xAD, XOR_L);
         _map.Add(0xAE, XOR_ADDRS_HL);
         _map.Add(0xAF, XOR_A);
 
+        _map.Add(0xB0, OR_B);
         _map.Add(0xB1, OR_C);
         _map.Add(0xB6, OR_ADDRS_HL);
         _map.Add(0xB7, OR_A);
@@ -129,6 +137,14 @@ public sealed partial class SimpleBoyCPU
 
     }
 
+    private void LD_B_H()  => LoadToReg(ref _registers.BC.HighByte, _registers.H);
+    private void LD_B_E() => LoadToReg(ref _registers.BC.HighByte, _registers.E);
+    private void LD_B_D() => LoadToReg(ref _registers.BC.HighByte, _registers.D);
+    private void LD_B_C() => LoadToReg(ref _registers.BC.HighByte, _registers.C);
+    private void OR_B() => Or(_registers.B);
+    private void LD_H_A() => LoadToReg(ref _registers.HL.HighByte, _registers.A);
+    private void LD_A_ADDRSS_HL() => LoadToReg(ref _registers.AF.HighByte, _bus.Read(_registers.HL), 8);
+    private void XOR_L() => Xor(_registers.L);
     private void LD_B_B() => LoadToReg(ref _registers.BC.HighByte, _registers.BC.HighByte);
     private void LD_ADDRSS_HL_E() => LoadToBus(in _registers.HL, _registers.E);
     private void SRA_E() => ShiftRightArithmetic(ref _registers.DE.LowByte);
@@ -249,21 +265,7 @@ public sealed partial class SimpleBoyCPU
 
     private void LDH_A_N() => LoadToReg(ref _registers.AF.HighByte,
         _bus.Read((ushort)(0xFF00 + Fetch().Value)), 12);
-
-    private void JR_Z_N()
-    {
-        ushort cycles = 8;
-
-        if (_registers.FlagZ)
-        {
-            var b1 = (sbyte)Fetch();
-            _registers.PC = (ushort)(_registers.PC + b1);
-            cycles = 12;
-        }
-        _registers.PC++;
-        _clock.cycles += cycles;
-    }
-
+    private void JR_Z_N() => ConditionalJump(_registers.FlagZ);
     private void OR_C() => Or(_registers.A | _registers.C);
     private void LD_A_B() => LoadToReg(ref _registers.AF.HighByte, in _registers.BC.HighByte);
     private void PUSH_BC() => PushReg(_registers.BC);
@@ -529,12 +531,12 @@ public sealed partial class SimpleBoyCPU
         reg = result;
         _clock.cycles = cycles;
     }
-    private void Or(Bit8Value result)
+    private void Or(Bit8Value value)
     {
-        _registers.FlagZ = result == 0;
+        _registers.FlagZ = value == 0;
         _registers.FlagC = _registers.FlagH = _registers.FlagN = false;
 
-        _registers.A = result;
+        _registers.A = value;
 
         _clock.cycles += 4;
     }

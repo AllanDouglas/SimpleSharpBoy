@@ -37,7 +37,7 @@ public sealed class Bus16Bit : IBus<Bit8Value, Bit16Value>
             connector.Write(address, value);
             return;
         }
-
+    
         Write(address.Value, value.Value);
     }
 
