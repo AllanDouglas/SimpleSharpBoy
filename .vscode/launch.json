@@ -12,7 +12,7 @@
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/SimpleSharpBoy/bin/Debug/net7.0/SimpleSharpBoy.dll",
             "args": [
-                "cpu_instrs/individual/06-ld r,r.gb"
+                "cpu_instrs/fb.gb"
             ],
             "cwd": "${workspaceFolder}",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console

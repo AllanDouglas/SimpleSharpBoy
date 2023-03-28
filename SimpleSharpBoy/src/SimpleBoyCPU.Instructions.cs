@@ -14,19 +14,29 @@ public sealed partial class SimpleBoyCPU
         _map.Add(0x06, LD_B_N);
         _map.Add(0x07, RLCA);
         _map.Add(0x08, LD_ADDRS_NN_SP);
+        _map.Add(0x09, ADD_HL_BC);
+        _map.Add(0x0A, LD_A_ADDRS_BC);
+        _map.Add(0x0B, DEC_BC);
+        _map.Add(0x0C, INC_C);
         _map.Add(0x0D, DEC_C);
         _map.Add(0x0E, LD_C_N);
+        _map.Add(0x0F, RRCA);
 
         _map.Add(0x10, STOP);
         _map.Add(0x11, LD_DE_NN);
         _map.Add(0x12, LD_ADDRS_DE_A);
         _map.Add(0x13, INC_DE);
-        _map.Add(0x18, JR_NN);
-        _map.Add(0x1C, INC_E);
         _map.Add(0x14, INC_D);
+        _map.Add(0x15, DEC_D);
+        _map.Add(0x16, LD_D_N);
+        _map.Add(0x17, RLA);
+        _map.Add(0x18, JR_NN);
+        _map.Add(0x19, ADD_HL_DE);
         _map.Add(0x1A, LD_A_ADDRS_DE);
         _map.Add(0x1B, DEC_DE);
+        _map.Add(0x1C, INC_E);
         _map.Add(0x1D, DEC_E);
+        _map.Add(0x1D, LD_E_N);
         _map.Add(0x1F, RRA);
 
         _map.Add(0x20, JR_NZ_N);
@@ -36,12 +46,15 @@ public sealed partial class SimpleBoyCPU
         _map.Add(0x24, INC_H);
         _map.Add(0x25, DEC_H);
         _map.Add(0x26, LD_H_N);
+        _map.Add(0x26, DAA);
         _map.Add(0x28, JR_Z_N);
         _map.Add(0x29, ADD_HL_HL);
         _map.Add(0x2A, LDI_A_ADDRS_HL);
+        _map.Add(0x2B, DEC_HL);
         _map.Add(0x2C, INC_L);
         _map.Add(0x2D, DEC_L);
         _map.Add(0x2E, LD_L_N);
+        _map.Add(0x2E, CPL);
 
 
         _map.Add(0x30, JR_NC_N);
@@ -58,32 +71,68 @@ public sealed partial class SimpleBoyCPU
         _map.Add(0x42, LD_B_D);
         _map.Add(0x43, LD_B_E);
         _map.Add(0x44, LD_B_H);
+        _map.Add(0x45, LD_B_L);
         _map.Add(0x46, LD_B_ADDRS_HL);
         _map.Add(0x47, LD_B_A);
+        _map.Add(0x48, LD_C_B);
+        _map.Add(0x49, LD_C_C);
+        _map.Add(0x4A, LD_C_D);
+        _map.Add(0x4B, LD_C_E);
+        _map.Add(0x4C, LD_C_H);
+        _map.Add(0x4D, LD_C_L);
         _map.Add(0x4E, LD_C_ADDRS_HL);
         _map.Add(0x4F, LD_C_A);
 
+        _map.Add(0x50, LD_D_B);
+        _map.Add(0x51, LD_D_C);
+        _map.Add(0x52, LD_D_D);
+        _map.Add(0x53, LD_D_E);
+        _map.Add(0x54, LD_D_H);
+        _map.Add(0x55, LD_D_L);
         _map.Add(0x56, LD_D_ADDRS_HL);
         _map.Add(0x57, LD_D_A);
+        _map.Add(0x58, LD_E_B);
+        _map.Add(0x59, LD_E_C);
+        _map.Add(0x5A, LD_E_D);
+        _map.Add(0x5B, LD_E_E);
+        _map.Add(0x5C, LD_E_H);
         _map.Add(0x5D, LD_E_L);
+        _map.Add(0x5E, LD_E_ADDRS_HL);
         _map.Add(0x5F, LD_E_A);
 
+        _map.Add(0x60, LD_H_B);
+        _map.Add(0x61, LD_H_C);
+        _map.Add(0x62, LD_H_D);
+        _map.Add(0x63, LD_H_E);
+        _map.Add(0x64, LD_H_H);
+        _map.Add(0x65, LD_H_L);
+        _map.Add(0x66, LD_H_ADDRS_HL);
         _map.Add(0x67, LD_H_A);
-        _map.Add(0x6E, LD_L_ADDRSS_HL);
+        _map.Add(0x68, LD_L_B);
+        _map.Add(0x69, LD_L_C);
+        _map.Add(0x6A, LD_L_D);
+        _map.Add(0x6B, LD_L_E);
+        _map.Add(0x6C, LD_L_H);
+        _map.Add(0x6D, LD_L_L);
+        _map.Add(0x6E, LD_L_ADDRS_HL);
         _map.Add(0x6F, LD_L_A);
 
-        _map.Add(0x70, LD_ADDRSS_HL_B);
-        _map.Add(0x71, LD_ADDRSS_HL_C);
-        _map.Add(0x72, LD_ADDRSS_HL_D);
-        _map.Add(0x73, LD_ADDRSS_HL_E);
-        _map.Add(0x77, LD_ADDRSS_HL_A);
+        _map.Add(0x70, LD_ADDRS_HL_B);
+        _map.Add(0x71, LD_ADDRS_HL_C);
+        _map.Add(0x72, LD_ADDRS_HL_D);
+        _map.Add(0x73, LD_ADDRS_HL_E);
+        _map.Add(0x74, LD_ADDRS_HL_H);
+        _map.Add(0x75, LD_ADDRS_HL_L);
+        _map.Add(0x76, HALT);
+        _map.Add(0x77, LD_ADDRS_HL_A);
         _map.Add(0x78, LD_A_B);
         _map.Add(0x79, LD_A_C);
         _map.Add(0x7A, LD_A_D);
         _map.Add(0x7B, LD_A_E);
         _map.Add(0x7C, LD_A_H);
         _map.Add(0x7D, LD_A_L);
-        _map.Add(0x7E, LD_A_ADDRSS_HL);
+        _map.Add(0x7E, LD_A_ADDRS_HL);
+        _map.Add(0x7F, LD_A_A);
 
         _map.Add(0xA9, XOR_C);
         _map.Add(0xAD, XOR_L);
@@ -137,16 +186,71 @@ public sealed partial class SimpleBoyCPU
 
     }
 
-    private void LD_B_H()  => LoadToReg(ref _registers.BC.HighByte, _registers.H);
+    private void CPL()
+    {
+        _registers.A = (byte)~_registers.A.Value;
+        _registers.FlagZ = _registers.A == 0;
+        _registers.FlagN = true;
+        _registers.FlagH = true;
+    }
+
+    private void DEC_HL() => DecReg(ref _registers.HL);
+
+
+
+    private void LD_E_N() => LoadToReg(ref _registers.DE.LowByte, Fetch(), 12);
+    private void ADD_HL_DE() => Add(ref _registers.HL, _registers.DE);
+    private void RLA() => RotateLeft(ref _registers.AF.HighByte);
+    private void LD_D_N() => LoadToReg(ref _registers.DE.HighByte, Fetch(), 12);
+    private void RRCA() => RotateRight(ref _registers.AF.HighByte);
+    private void INC_C() => IncReg(ref _registers.BC.LowByte);
+    private void DEC_BC() => DecReg(ref _registers.BC);
+    private void LD_A_ADDRS_BC() => LoadToReg(ref _registers.AF.HighByte, _bus.Read(_registers.BC));
+    private void ADD_HL_BC() => Add(ref _registers.HL, _registers.BC);
+    private void LD_A_A() => LoadToReg(ref _registers.AF.HighByte, _registers.A);
+    private void LD_ADDRS_HL_L() => LoadToBus(in _registers.HL, _registers.L);
+    private void LD_ADDRS_HL_H() => LoadToBus(in _registers.HL, _registers.H);
+    private void LD_L_L() => LoadToReg(ref _registers.HL.LowByte, _registers.L);
+    private void LD_L_H() => LoadToReg(ref _registers.HL.LowByte, _registers.H);
+    private void LD_L_E() => LoadToReg(ref _registers.HL.LowByte, _registers.E);
+    private void LD_L_D() => LoadToReg(ref _registers.HL.LowByte, _registers.D);
+    private void LD_L_C() => LoadToReg(ref _registers.HL.LowByte, _registers.C);
+    private void LD_L_B() => LoadToReg(ref _registers.HL.LowByte, _registers.B);
+    private void LD_H_L() => LoadToReg(ref _registers.HL.HighByte, _registers.L);
+    private void LD_H_H() => LoadToReg(ref _registers.HL.HighByte, _registers.H);
+    private void LD_H_E() => LoadToReg(ref _registers.HL.HighByte, _registers.E);
+    private void LD_H_D() => LoadToReg(ref _registers.HL.HighByte, _registers.D);
+    private void LD_H_C() => LoadToReg(ref _registers.HL.HighByte, _registers.C);
+    private void LD_H_B() => LoadToReg(ref _registers.HL.HighByte, _registers.B);
+    private void LD_E_ADDRS_HL() => LoadToReg(ref _registers.DE.LowByte, _bus.Read(_registers.HL), 8);
+    private void LD_E_H() => LoadToReg(ref _registers.DE.LowByte, _registers.H);
+    private void LD_E_E() => LoadToReg(ref _registers.DE.LowByte, _registers.E);
+    private void LD_E_D() => LoadToReg(ref _registers.DE.LowByte, _registers.D);
+    private void LD_E_C() => LoadToReg(ref _registers.DE.LowByte, _registers.C);
+    private void LD_E_B() => LoadToReg(ref _registers.DE.LowByte, _registers.B);
+    private void LD_D_L() => LoadToReg(ref _registers.DE.HighByte, _registers.L);
+    private void LD_D_H() => LoadToReg(ref _registers.DE.HighByte, _registers.H);
+    private void LD_D_E() => LoadToReg(ref _registers.DE.HighByte, _registers.E);
+    private void LD_D_D() => LoadToReg(ref _registers.DE.HighByte, _registers.D);
+    private void LD_D_C() => LoadToReg(ref _registers.DE.HighByte, _registers.C);
+    private void LD_D_B() => LoadToReg(ref _registers.DE.HighByte, _registers.B);
+    private void LD_C_L() => LoadToReg(ref _registers.BC.LowByte, _registers.L);
+    private void LD_C_H() => LoadToReg(ref _registers.BC.LowByte, _registers.H);
+    private void LD_C_E() => LoadToReg(ref _registers.BC.LowByte, _registers.E);
+    private void LD_C_D() => LoadToReg(ref _registers.BC.LowByte, _registers.D);
+    private void LD_C_C() => LoadToReg(ref _registers.BC.LowByte, _registers.C);
+    private void LD_C_B() => LoadToReg(ref _registers.BC.LowByte, _registers.B);
+    private void LD_B_L() => LoadToReg(ref _registers.BC.HighByte, _registers.L);
+    private void LD_B_H() => LoadToReg(ref _registers.BC.HighByte, _registers.H);
     private void LD_B_E() => LoadToReg(ref _registers.BC.HighByte, _registers.E);
     private void LD_B_D() => LoadToReg(ref _registers.BC.HighByte, _registers.D);
     private void LD_B_C() => LoadToReg(ref _registers.BC.HighByte, _registers.C);
     private void OR_B() => Or(_registers.B);
     private void LD_H_A() => LoadToReg(ref _registers.HL.HighByte, _registers.A);
-    private void LD_A_ADDRSS_HL() => LoadToReg(ref _registers.AF.HighByte, _bus.Read(_registers.HL), 8);
+    private void LD_A_ADDRS_HL() => LoadToReg(ref _registers.AF.HighByte, _bus.Read(_registers.HL), 8);
     private void XOR_L() => Xor(_registers.L);
     private void LD_B_B() => LoadToReg(ref _registers.BC.HighByte, _registers.BC.HighByte);
-    private void LD_ADDRSS_HL_E() => LoadToBus(in _registers.HL, _registers.E);
+    private void LD_ADDRS_HL_E() => LoadToBus(in _registers.HL, _registers.E);
     private void SRA_E() => ShiftRightArithmetic(ref _registers.DE.LowByte);
     private void RR_E() => RightRotation(ref _registers.DE.LowByte);
     private void SLA_A() => ShiftLeftArithmetic(ref _registers.AF.HighByte);
@@ -156,9 +260,9 @@ public sealed partial class SimpleBoyCPU
     private void JP_HL() => Jump(_registers.HL, 4);
     private void DEC_DE() => DecReg(ref _registers.DE);
     private void DEC_E() => DecReg(ref _registers.DE.LowByte);
-    private void ADD_HL_HL() => ADD(ref _registers.HL, _registers.HL, 8);
+    private void ADD_HL_HL() => Add(ref _registers.HL, _registers.HL, 8);
     private void LD_L_A() => LoadToReg(ref _registers.HL.LowByte, _registers.A);
-    private void LD_L_ADDRSS_HL() => LoadToReg(ref _registers.HL.LowByte, _bus.Read(_registers.HL), 8);
+    private void LD_L_ADDRS_HL() => LoadToReg(ref _registers.HL.LowByte, _bus.Read(_registers.HL), 8);
     private void DEC_ADDRS_HL() => DecFromBus(in _registers.HL);
     private void OR_ADDRS_HL() => Or(_bus.Read(_registers.HL));
     private void DEC_A() => DecReg(ref _registers.AF.HighByte);
@@ -191,7 +295,7 @@ public sealed partial class SimpleBoyCPU
     private void PUSH_DE() => PushReg(in _registers.DE);
     private void OR_A() => Or(_registers.A | _registers.A);
     private void SUB_N() => Sub(ref _registers.AF.HighByte, Fetch(), 8);
-    private void ADD_A_N() => ADD(ref _registers.AF.HighByte, Fetch(), 8);
+    private void ADD_A_N() => Add(ref _registers.AF.HighByte, Fetch(), 8);
     private void RET_C() => ConditionalRet(_registers.FlagC);
     private void LD_H_ADDRS_HL() => LoadToReg(ref _registers.HL.HighByte, _bus.Read(_registers.HL), 8);
     private void XOR_C() => Xor(_registers.C);
@@ -199,10 +303,10 @@ public sealed partial class SimpleBoyCPU
     private void INC_H() => IncReg(ref _registers.HL.HighByte);
     private void INC_L() => IncReg(ref _registers.HL.LowByte);
     private void LD_A_ADDRS_DE() => LoadToReg(ref _registers.AF.HighByte, _bus.Read(_registers.DE));
-    private void LD_ADDRSS_HL_A() => LoadToBus(in _registers.HL, _registers.A);
-    private void LD_ADDRSS_HL_B() => LoadToBus(in _registers.HL, _registers.B);
-    private void LD_ADDRSS_HL_C() => LoadToBus(in _registers.HL, _registers.C);
-    private void LD_ADDRSS_HL_D() => LoadToBus(in _registers.HL, _registers.D);
+    private void LD_ADDRS_HL_A() => LoadToBus(in _registers.HL, _registers.A);
+    private void LD_ADDRS_HL_B() => LoadToBus(in _registers.HL, _registers.B);
+    private void LD_ADDRS_HL_C() => LoadToBus(in _registers.HL, _registers.C);
+    private void LD_ADDRS_HL_D() => LoadToBus(in _registers.HL, _registers.D);
     private void LD_B_N() => LoadToReg(ref _registers.BC.HighByte, Fetch(), 8);
     private void DEC_B() => DecReg(ref _registers.BC.HighByte);
     private void INC_B() => IncReg(ref _registers.BC.HighByte);
@@ -321,12 +425,7 @@ public sealed partial class SimpleBoyCPU
         _clock.cycles += 24;
     }
 
-    private void LD_HL_NN() => LoadToReg(ref _registers.HL, new Bit16Value()
-    {
-        LowByte = Fetch(),
-        HighByte = Fetch()
-    });
-
+    private void LD_HL_NN() => LoadToReg(ref _registers.HL, new() { LowByte = Fetch(), HighByte = Fetch() });
     private void LDH_N_A()
     {
         var lo = Fetch().Value;
@@ -378,11 +477,7 @@ public sealed partial class SimpleBoyCPU
         _clock.cycles += 20;
     }
 
-    private void RLCA()
-    {
-        _clock.cycles += 4;
-        throw new NotImplementedException();
-    }
+    private void RLCA() => RotateLeft(ref _registers.AF.HighByte, 4);
 
     private void HALT() => _clock.cycles += 4;
 
@@ -394,6 +489,48 @@ public sealed partial class SimpleBoyCPU
     });
 
     private void LD_ADDRS_BC_A() => LoadRegValueToRegADDRS(_registers.BC, _registers.A);
+    private void DAA()
+    {
+
+        byte regA = _registers.A.Value;
+
+        bool flagH = _registers.FlagH;
+        bool flagN = _registers.FlagN;
+        bool flagC = _registers.FlagC;
+
+        bool newFlagH = false;
+        bool newFlagC = false;
+
+        int daa = 0;
+
+        if (flagN)
+        {
+            if (flagH)
+                daa = -0x06;
+            if (flagC)
+                daa -= 0x60;
+        }
+        else
+        {
+            if (flagH || (regA & 0x0F) > 0x09 || daa >= 0x06)
+            {
+                daa += 0x06;
+                newFlagH = true;
+            }
+
+            if (flagC || regA > 0x99 || daa >= 0x60)
+            {
+                daa += 0x60;
+                newFlagC = true;
+            }
+        }
+        regA += (byte)daa;
+
+        _registers.A += (byte)daa;
+        _registers.FlagZ = regA == 0;
+        _registers.FlagH = newFlagH;
+        _registers.FlagC = newFlagC;
+    }
 
     private void LoadRegValueToRegADDRS(Bit16Value addrs, Bit8Value value)
     {
@@ -493,7 +630,7 @@ public sealed partial class SimpleBoyCPU
         _clock.cycles += 12;
     }
 
-    private void ADD(ref Bit8Value reg, Bit8Value b1, byte cycles = 4)
+    private void Add(ref Bit8Value reg, Bit8Value b1, byte cycles = 4)
     {
         Bit8Value current = reg;
         var result = current.Value + b1.Value;
@@ -507,7 +644,7 @@ public sealed partial class SimpleBoyCPU
         _clock.cycles += cycles;
     }
 
-    private void ADD(ref Bit16Value reg, Bit16Value value, byte cycles = 4)
+    private void Add(ref Bit16Value reg, Bit16Value value, byte cycles = 4)
     {
         var current = reg;
         var result = current.Value + value.Value;
@@ -648,6 +785,32 @@ public sealed partial class SimpleBoyCPU
         _bus.Write(reg, value);
         _clock.cycles += 12;
     }
+    private void RotateLeft(ref Bit8Value reg, byte cycles = 4)
+    {
+
+        var hBit = reg.Value & 0b1000_0000;
+        var value = (reg.Value << 1) | (hBit >> 7);
+
+        _registers.FlagC = hBit > 0;
+        _registers.FlagN = _registers.FlagH = _registers.FlagZ = false;
+
+        reg = (byte)value;
+        _clock.cycles += cycles;
+    }
+
+    private void RotateRight(ref Bit8Value reg, byte cycles = 4)
+    {
+
+        var hBit = reg.Value & 0b0000_0001;
+        var value = (reg.Value >> 1) | hBit;
+
+        _registers.FlagC = hBit > 0;
+        _registers.FlagN = _registers.FlagH = _registers.FlagZ = false;
+
+        reg = (byte)value;
+        _clock.cycles += cycles;
+    }
+
 
 
 }
