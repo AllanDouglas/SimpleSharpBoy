@@ -18,9 +18,10 @@ public sealed partial class SimpleBoyCPU : ICPU
     private long _ticks;
     public Registers CpuRegisters => _registers;
 
-    public SimpleBoyCPU(IBus<Bit8Value, Bit16Value> bus)
+    public SimpleBoyCPU(IBus<Bit8Value, Bit16Value> bus, bool debug = false)
     {
         _bus = bus;
+        _debug = debug;
         InitInstructions();
     }
 
