@@ -3,11 +3,11 @@ namespace SimpleSharpBoy;
 public sealed class SimpleConsole
 {
     private readonly ICPU _cpu;
-    private readonly IDisplay _ppu;
+    private readonly IPPU _ppu;
     private readonly SimpleDMA _dma;
     private bool _powerOn;
 
-    public SimpleConsole(ICPU cpu, IDisplay display, SimpleDMA dma)
+    public SimpleConsole(ICPU cpu, IPPU display, SimpleDMA dma)
     {
         _cpu = cpu;
         _ppu = display;
@@ -48,6 +48,7 @@ public sealed class SimpleConsole
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
+                    throw;
                 }
             }
         });

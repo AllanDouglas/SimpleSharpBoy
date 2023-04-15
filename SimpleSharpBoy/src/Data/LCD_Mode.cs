@@ -1,0 +1,6 @@
+namespace SimpleSharpBoy;
+
+public enum LCD_Mode
+{
+    HORIZONTAL_BLANK, VERTICAL_BLANK, SEARCHING_OAM, TRANSFERRING_DATA
+}

@@ -1,6 +1,6 @@
 namespace SimpleSharpBoy;
 
-public interface IDisplay : IPowerSwitcherDispatcher
+public interface IPPU : IPowerSwitcherDispatcher
 {
     void Update();
     void Close();

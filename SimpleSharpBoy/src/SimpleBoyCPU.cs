@@ -5,8 +5,8 @@ public sealed partial class SimpleBoyCPU : ICPU
     private delegate void Instruction();
     private static readonly Instruction NOT_IMPlEMENTED = EMPTY;
     private static void EMPTY() { }
-
-    private bool _debug;
+    private bool _debug = true;
+    private bool _interruptEnable;
     private Registers _registers;
     private Clock _clock;
     private bool _halted;

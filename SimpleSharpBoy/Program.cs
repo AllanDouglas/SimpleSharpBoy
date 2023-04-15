@@ -3,6 +3,7 @@ using SimpleSharpBoy;
 
 var data = File.ReadAllBytes(args[0]);
 var cartridge = new Cartridge(data);
+var lcd = new SimpleLCD();
 
 var bus = new Bus16Bit();
 
@@ -10,6 +11,7 @@ var cpu = new SimpleBoyCPU(bus);
 var ppu = new SimplePPU(bus, true);
 var dma = new SimpleDMA(bus);
 
+bus.Connect(lcd);
 bus.Connect(cartridge);
 bus.Connect(dma);
 
