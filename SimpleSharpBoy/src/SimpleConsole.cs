@@ -4,21 +4,22 @@ public sealed class SimpleConsole
 {
     private readonly ICPU _cpu;
     private readonly IPPU _ppu;
+    private readonly ILDC _lcd;
     private readonly SimpleDMA _dma;
     private bool _powerOn;
 
-    public SimpleConsole(ICPU cpu, IPPU display, SimpleDMA dma)
+    public SimpleConsole(ICPU cpu, IPPU display, ILDC lcd)
     {
         _cpu = cpu;
         _ppu = display;
-        _dma = dma;
+        _lcd = lcd;
 
-        display.OnSwitch += DisplaySwitchHandler;
+        display.OnPowerSwitch += DisplaySwitchHandler;
     }
 
     private void DisplaySwitchHandler(bool state)
     {
-        _ppu.OnSwitch -= DisplaySwitchHandler;
+        _ppu.OnPowerSwitch -= DisplaySwitchHandler;
 
         if (!state && _powerOn)
         {
@@ -56,7 +57,7 @@ public sealed class SimpleConsole
         while (_powerOn)
         {
             _ppu.Update();
-            _dma.Tick();
+            _lcd.Update();
         }
     }
     public void PowerOff()

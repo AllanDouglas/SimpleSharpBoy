@@ -17,10 +17,10 @@ public sealed class Bus16Bit : IBus<Bit8Value, Bit16Value>
 
     }
 
-    public byte Read(ushort address) => _memory[address];
-    public void Write(ushort address, byte value) => _memory[address] = value;
+    public byte Read(in ushort address) => _memory[address];
+    public void Write(in ushort address, byte value) => _memory[address] = value;
 
-    public Bit8Value Read(Bit16Value address)
+    public Bit8Value Read(in Bit16Value address)
     {
         if (TryGetConnector(in address, out var connector))
         {
@@ -30,7 +30,7 @@ public sealed class Bus16Bit : IBus<Bit8Value, Bit16Value>
         return Read(address.Value);
     }
 
-    public void Write(Bit16Value address, Bit8Value value)
+    public void Write(in Bit16Value address, Bit8Value value)
     {
         if (TryGetConnector(in address, out var connector))
         {

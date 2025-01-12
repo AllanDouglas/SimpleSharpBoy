@@ -16,7 +16,9 @@ public sealed partial class SimpleBoyCPU : ICPU
     private readonly IBus<Bit8Value, Bit16Value> _bus;
     private readonly Dictionary<byte, Instruction> _map = new();
     private long _ticks;
+    private List<IPeripheral> _peripherals = new();
     public Registers CpuRegisters => _registers;
+
 
     public SimpleBoyCPU(IBus<Bit8Value, Bit16Value> bus, bool debug = false)
     {
@@ -25,28 +27,30 @@ public sealed partial class SimpleBoyCPU : ICPU
         InitInstructions();
     }
 
+    public void AddPeripheral(IPeripheral peripheral) => _peripherals.Add(peripheral);
 
     public void Reset()
     {
         _registers.PC = 0x0100;
         _registers.SP = 0xFFFE;
-        _registers.AF = 0x1180;
-        _registers.BC = 0;
-        _registers.DE = 0xFF56;
+        _registers.AF = 0x01B0;
+        _registers.BC = 0x0013;
+        _registers.DE = 0x00D8;
+        _registers.HL = 0x014D;
         _registers.m = _registers.t = 0;
 
 
         // initial LCD state
-        _bus.Write(0xFF40, 91);
-        _bus.Write(0xFF41, 81);
+        _bus.Write(0xFF40, 0x91);
+        _bus.Write(0xFF41, 0x85);
         _bus.Write(0xFF42, 0);
         _bus.Write(0xFF43, 0);
-        _bus.Write(0xFF44, 0x90);
+        _bus.Write(0xFF44, 0);
         _bus.Write(0xFF45, 0);
-        _bus.Write(0xFF46, 0xFC);
-        _bus.Write(0xFF47, 0);
-        _bus.Write(0xFF48, 0);
-        _bus.Write(0xFF49, 0);
+        _bus.Write(0xFF46, 0xFF);
+        _bus.Write(0xFF47, 0xFC);
+        _bus.Write(0xFF48, 0xFF);
+        _bus.Write(0xFF49, 0xFF);
         _bus.Write(0xFF4A, 0);
         _bus.Write(0xFF4B, 0);
 
@@ -64,6 +68,7 @@ public sealed partial class SimpleBoyCPU : ICPU
             FetchInstruction();
             ExecuteInstruction();
             EmulateCycles();
+            ResolvePeripherals();
             if (_debug)
             {
                 DumpLastExecutedInstruction();
@@ -79,6 +84,7 @@ public sealed partial class SimpleBoyCPU : ICPU
         void ExecuteInstruction()
         {
             _lastFunction = Decode(_lastOP);
+
             _lastFunction.Invoke();
         }
 
@@ -86,8 +92,22 @@ public sealed partial class SimpleBoyCPU : ICPU
         {
             var time = TimeSpan.FromMicroseconds(0.25 * _clock.cycles);
             _ticks += _clock.cycles;
+
+            _registers.m = (ushort)(_clock.cycles / 4);
+            _registers.t = _clock.cycles;
+
             _clock.cycles = 0;
-            Thread.Sleep(time);
+            // Thread.Sleep(time);
+        }
+
+        void ResolvePeripherals()
+        {
+            var snapshot = _registers;
+            foreach (var p in _peripherals)
+            {
+
+                p.Tick(snapshot);
+            }
         }
     }
 
@@ -95,18 +115,26 @@ public sealed partial class SimpleBoyCPU : ICPU
         => Console.WriteLine(string.Format("PC {0,-5:X} | OP {1,-4:X} | FUNC {2,15:X} | REG {3,25}",
                                       _lastPC.Value, _lastOP.Value, _lastFunction.Method.Name, _registers));
 
-    private Instruction Decode(Bit8Value op)
+    private Instruction Decode(in Bit8Value op)
     {
         if (_map.TryGetValue(op.Value, out var instruction))
         {
+            // DumpLastExecutedInstruction();
             return instruction;
         }
-
-        DumpLastExecutedInstruction();
-        throw new NotImplementedException($"INSTRUCTION {op.Value:X} NOT IMPLEMENTED YET");
+        else
+        {
+            DumpLastExecutedInstruction();
+            throw new NotImplementedException($"INSTRUCTION {op.Value:X} NOT IMPLEMENTED YET");
+        }
         // return NOT_IMPlEMENTED;
     }
-    private Bit8Value Fetch() => _bus.Read(_registers.PC++);
+    private Bit8Value Fetch()
+    {
+        var pc = _registers.PC;
+        _registers.PC++;
+        return _bus.Read(in pc);
+    }
 
     private partial void InitInstructions();
 
@@ -115,13 +143,5 @@ public sealed partial class SimpleBoyCPU : ICPU
         public ushort size, cycles;
     }
 
-    [Flags]
-    private enum Flags
-    {
-        Z = 1 << 7,
-        N = 1 << 6,
-        H = 1 << 5,
-        C = 1 << 4
-    }
 
 }

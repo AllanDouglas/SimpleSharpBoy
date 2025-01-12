@@ -29,9 +29,9 @@ public sealed class SimpleDMA : IBusConnector<Bit8Value, Bit16Value>
         if (!_running)
             return;
 
-        var address = (ushort)(_currentValue.Value * 0x100 + _currentByte.Value);
+        var address = new Bit16Value((ushort)(_currentValue.Value * 0x100 + _currentByte.Value));
         var value = _bus.Read(address);
-        _bus.Write(new() { HighByte = 0xFE, LowByte = _currentValue }, value);
+        _bus.Write(new() { High = 0xFE, Low = _currentValue }, value);
 
         _currentByte++;
 

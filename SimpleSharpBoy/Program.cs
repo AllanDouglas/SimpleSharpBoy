@@ -4,22 +4,21 @@ using SimpleSharpBoy;
 var romPath = args[0];
 var debug = args.Length > 1 && bool.Parse(args[1]);
 
-
 var data = File.ReadAllBytes(romPath);
 var cartridge = new Cartridge(data);
-var lcd = new SimpleLCD();
 
 var bus = new Bus16Bit();
 
 var cpu = new SimpleBoyCPU(bus, debug);
-var ppu = new SimplePPU(bus, true);
-var dma = new SimpleDMA(bus);
+var lcd = new SimpleLCD(bus);
+var ppu = new SimplePPU(lcd, bus, false);
+
+cpu.AddPeripheral(ppu);
 
 bus.Connect(lcd);
 bus.Connect(cartridge);
-bus.Connect(dma);
 
-var console = new SimpleConsole(cpu, ppu, dma);
+var console = new SimpleConsole(cpu, ppu, lcd);
 
 Console.WriteLine("####################");
 Console.WriteLine($"{nameof(cartridge.Title)} = {cartridge.Title}");

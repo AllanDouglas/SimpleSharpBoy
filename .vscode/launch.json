@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/SimpleSharpBoy/bin/Debug/net7.0/SimpleSharpBoy.dll",
+            "program": "${workspaceFolder}/SimpleSharpBoy/bin/Debug/net8.0/SimpleSharpBoy.dll",
             "args": [
-                "cpu_instrs/individual/02-interrupts.gb",
+                "cpu_instrs/fb.gb",
                 "true"
             ],
             "cwd": "${workspaceFolder}",

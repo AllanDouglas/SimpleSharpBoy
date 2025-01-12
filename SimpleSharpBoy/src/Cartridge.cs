@@ -58,8 +58,8 @@ public sealed class Cartridge : IBusConnector<Bit8Value, Bit16Value>
     {
         get
         {
-            return GetLicensse(_data[0x014b]);
-            string GetLicensse(byte code)
+            return GetLicense(_data[0x014b]);
+            string GetLicense(byte code)
             {
                 return code switch
                 {

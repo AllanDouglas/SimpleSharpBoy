@@ -10,7 +10,7 @@ public interface ILDC
 
     Bit8Value ScrollX { get; }
     Bit8Value ScrollY { get; }
-    Bit8Value Ly { get; }
+    Bit8Value Ly { get; set; }
     Bit8Value LyCompare { get; }
     Bit8Value WindowPosX { get; }
     Bit8Value WindowPosY { get; }
@@ -22,4 +22,5 @@ public interface ILDC
     Color[] SpriteColorsOne { get; }
     Color[] SpriteColorsTwo { get; }
 
+    void Update();
 }

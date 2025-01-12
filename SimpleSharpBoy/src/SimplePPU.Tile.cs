@@ -14,7 +14,7 @@ public sealed partial class SimplePPU
             row = 7 - row;
             var pos = 1 << row;
 
-            var index = ((value.HighByte.Value & pos) >> row) + ((value.LowByte.Value & pos) >> row);
+            var index = ((value.High.Value & pos) >> row) + ((value.Low.Value & pos) >> row);
 
             return PALETTE[index];
         }
